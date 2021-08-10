@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+ 
+{% block body %}
+
+    <div class="container">
+      <h1>Création d'un article</h1>
+
+      {{ form_start(form)}}
+
+      {{ form_widget(form)}}
+
+      {% if app.request.attributes.get('_route') == "create_article" %}
+      <input type="submit" value="Créer">
+      {% elseif app.request.attributes.get('_route') == "update_article" %}
+      <input type="submit" value="Modifier">
+      {% endif %}
+
+      {{ form_end(form)}}
+
+    </div>
+
+{% endblock %}
