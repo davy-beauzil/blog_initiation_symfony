@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
+
+
 {% block title %}Hello ArticleController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+{% endblock %}
 
 {% block body %}
 <style>
@@ -14,8 +21,9 @@
     {% for article in articles %}
     
         <div class="jumbotron">
+            <span class="badge badge-secondary">{{ article.category.title }}</span>
             <h1 class="display-4">{{ article.title }}</h1>
-            <p class="lead">{{ article.content }}</p>
+            <p class="content">{{ article.content }}</p>
             <hr class="my-4">
             <p>{{ article.author }}</p>
 
@@ -30,6 +38,7 @@
             <p class="lead">
                 <a class="btn btn-primary btn-lg" href="/article/{{ article.id}}/update" role="button">Modifier</a>
                 <a class="btn btn-danger btn-lg" href="/article/{{ article.id}}/delete" role="button">Supprimer</a>
+                <a class="btn btn-info btn-lg" href="/article/{{ article.id}}" role="button">Voir plus</a>
             </p>
         </div>
 

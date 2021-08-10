@@ -2,8 +2,41 @@
 
 {% block body %}
 
-    <div class="container">
-      <h1>Voici l'article</h1>
-    </div>
+
+<div class="container">
+  <div class="jumbotron">
+      <span class="badge badge-secondary">{{ article.category.title }}</span>
+      <h1 class="display-4">{{ article.title }}</h1>
+      <p class="lead">{{ article.content }}</p>
+      <hr class="my-4">
+      <p>{{ article.author }}</p>
+
+      <p>
+      {% if article.created_at == article.updated_at %}
+          Créé le : {{article.created_at|date("d/m/Y")}}
+      {% else %}
+          Créé le : {{article.created_at|date("d/m/Y")}}<br>
+          Mis à jour le : {{article.updated_at|date("d/m/Y")}}
+      {% endif %}
+      </p>
+      <p class="lead">
+          <a class="btn btn-primary btn-lg" href="/article/{{ article.id}}/update" role="button">Modifier</a>
+          <a class="btn btn-danger btn-lg" href="/article/{{ article.id}}/delete" role="button">Supprimer</a>
+
+      </p>
+  </div>
+
+  <div>
+    {% for comment in article.comments %}
+      <div>
+        le {{comment.createdAt|date("d/m/Y")}}, {{comment.author}} a écrit :<br>
+        {{comment.content}}
+        <hr>
+      </div>
+      
+    {% endfor %}
+  </div>
+</div>
+    
 
 {% endblock %}

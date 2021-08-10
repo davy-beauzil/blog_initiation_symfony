@@ -9,18 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Article;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/article", name="articles_show")
+     * @Route("/articles", name="articles_show")
      */
     public function index(): Response
     {
         $repo = $this->getDoctrine()->getRepository(Article::class);
         $articles = $repo->findAll();
 
-        dump($articles);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
@@ -42,18 +43,20 @@ class ArticleController extends AbstractController
             ->add('title')
             ->add('content')
             ->add('author')
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'title'
+            ])
             ->getForm();
 
         /* Lors de la réponse du formulaire, les données POST ou GET reçue sont bindée automatiquement avec $article */
         $form->handleRequest($request);
 
-        dump($form->isSubmitted() && $form->isValid());
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($article->getId()) {
                 $article->setUpdatedAt(new \DateTimeImmutable());
-                dd(new \DateTimeImmutable());
             } else {
                 $article->setCreatedAt(new \DateTimeImmutable());
                 $article->setUpdatedAt(new \DateTimeImmutable());
@@ -73,11 +76,8 @@ class ArticleController extends AbstractController
     /**
      * @Route("/article/{id}", name="article_show")
      */
-    public function show()
+    public function show(Article $article)
     {
-
-        $article = 'test';
-
         return $this->render('article/article.html.twig', [
             'article' => $article
         ]);
